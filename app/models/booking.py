@@ -11,4 +11,12 @@ class Room(Base):
     total_capacity = Column(Integer, default=1)
     available = Column(Integer, default=1)
     version = Column(Integer, default= 0, nullable=False) #KEY FOR OPTIMISTIC LOCKING
-    
+
+
+class Booking(Base):
+    __tablename__ = "bookings"
+
+    id = Column(Integer,primary_key=True, index=True)
+    room_id = Column(Integer, ForeignKey("rooms.id"))
+    user_email = Column(String, index=True)
+    booking_date = Column(DateTime(timezone=True), server_default=func.now())
