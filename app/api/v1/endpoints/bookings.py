@@ -6,3 +6,5 @@ from app.api import deps
 from app.services.booking_service import BookingService
 from pydantic import BaseModel
 
+router = APIRouter()
+
