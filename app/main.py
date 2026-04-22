@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.api.v1.endpoints import bookings
 from app.core.database import engine, Base
+from app.core.config import settings
 
-
-app.include_router(bookings.router, prefix="/api/v1/bookings", tags=["reservas"])
+#app.include_router(bookings.router, prefix="/api/v1/bookings", tags=["reservas"])
 
 @asynccontextmanager 
 async def lifespan(app: FastAPI):
@@ -16,5 +16,10 @@ async def lifespan(app: FastAPI):
 
     await engine.dispose()
     print("Database engine closed. Connections released.")
+
+
+app = FastAPI(
+    title=
+)
 
 
