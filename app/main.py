@@ -19,7 +19,10 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title=
+    title=settings.PROJECT_NAME,
+    description="Reservation System with Concurrency Control (Pessimistic/Optimistic)",
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 
