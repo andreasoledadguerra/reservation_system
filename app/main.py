@@ -4,7 +4,6 @@ from app.api.v1.endpoints import bookings
 from app.core.database import engine, Base
 from app.core.config import settings
 
-#app.include_router(bookings.router, prefix="/api/v1/bookings", tags=["reservas"])
 
 @asynccontextmanager 
 async def lifespan(app: FastAPI):
@@ -25,4 +24,5 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+app.include_router(bookings.router, prefix="/api/v1/bookings", tags=["Reservas"])
 
