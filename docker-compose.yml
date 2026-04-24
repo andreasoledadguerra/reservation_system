@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: bookings_db
+    environment:
+      POSTGRES_USER: POSTGRES_USER
+      POSTGRES_PASSWORD: POSTGRES_PASSWORD
+      POSTGRES_DB: bookings_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d bookings_db"]
+      interval: Ss
+      timeout: Ss
+      retries: S
+
+
+  api:
+    build:
+    container_name: bookings_api
+    ports:
+      -  "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      environment:
+        DATABASE_URL: postgresql+asyncpg://user:password@db:5432/bookings_db
+      volumes:
+        - ./app:/app/app #mount code for live reload during development
+      command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  
+  volumes:
+    postgres_data:
