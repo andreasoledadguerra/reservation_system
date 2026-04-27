@@ -31,7 +31,7 @@ async def create_optimistic_booking(
 ):
     result = await BookingService.optimistic_booking(db, room_id, payload.email)
     if "error" in result:
-        #Return 409 Conflict so tehe frontend can automatically  retry
+        # Return 409 Conflict so the frontend can automatically  retry
         status_code = 409 if "Conflict" in result["error"] else 400
         raise HTTPException(status_code=status_code, detail=result["error"])
     return result
