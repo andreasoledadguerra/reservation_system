@@ -38,4 +38,21 @@ async def test_pessimistic_concurrency(setup_db):
 
     assert sucess_count == 1, f"Only one booking must be successful, but it gets {sucess_count}"
     assert error_count == 9, f"9 requests must fail, but {error_count} failed"
-        
+
+@pytest.mark.asyncio
+async def test_optimistic_concurrency(setup_db):
+    """10 usuarios concurrentes intentan reservar la misma habitación (bloqueo optimista)"""
+    room_id = 1
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        tasks = [
+            client.post(f"/api/v1/reservas/optimistic/{room_id}", json={"email": f"user{i}@test.com"})
+            for i in range(10)
+        ]
+        responses = await asyncio.gather(*tasks)
+    
+    success_count = sum(1 for r in responses if r.status_code == 200)
+    conflict_count = sum(1 for r in responses if r.status_code == 409)
+    other_errors = sum(1 for r in responses if r.status_code == 400)
+    
+    assert success_count == 1, "Only one must be succesful"
+    assert conflict_count >= 1, "Some requests must return a 409 Conflict"
