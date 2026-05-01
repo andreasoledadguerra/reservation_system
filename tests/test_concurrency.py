@@ -14,7 +14,7 @@ async def setup_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     # Insert a test room with 1 available spot
-    async with engine.begin() as conn:
+    async with AsyncSession(engine) as conn:
         room = Room(name= "Test Room", total_capacity=1, available=1)
         conn.add(room)
         await conn.commit()
