@@ -8,7 +8,7 @@ from app.core.database import engine, Base
 from app.models.booking import Room
 
 
-@pytest.fixture(scope="module")
+@pytest_asyncio.fixture(scope="module")
 async def setup_db():
     # Create tables
     async with engine.begin() as conn:
