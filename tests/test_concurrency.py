@@ -35,8 +35,6 @@ async def test_pessimistic_concurrency(setup_db):
 
     sucess_count = sum(1 for r in responses if r.status_code == 200)
     error_count = sum(1 for r in responses if r.status_code == 400)
-
-
     assert sucess_count == 1, f"Only one booking must be successful, but it gets {sucess_count}"
     assert error_count == 9, f"9 requests must fail, but {error_count} failed"
 
@@ -53,7 +51,6 @@ async def test_optimistic_concurrency(setup_db):
     
     success_count = sum(1 for r in responses if r.status_code == 200)
     conflict_count = sum(1 for r in responses if r.status_code == 409)
-    other_errors = sum(1 for r in responses if r.status_code == 400)
-    
+    other_errors = sum(1 for r in responses if r.status_code == 400) 
     assert success_count == 1, "Only one must be succesful"
     assert conflict_count >= 1, "Some requests must return a 409 Conflict"
