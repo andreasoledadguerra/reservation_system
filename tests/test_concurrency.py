@@ -2,7 +2,7 @@ import asyncio
 import pytest
 import pytest_asyncio
 
-from httpx import AsyncClient, ASGITransport
+from httpx import AsyncSession, AsyncClient, ASGITransport
 from app.main import app
 from app.core.database import engine, Base
 from app.models.booking import Room
