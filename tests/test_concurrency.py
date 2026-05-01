@@ -1,7 +1,7 @@
 import asyncio
 import pytest
 
-from httpx import AsynClient, ASGITransport
+from httpx import AsyncClient, ASGITransport
 from app.main import app
 from app.core.database import engine, Base
 from app.models.booking import Room
@@ -25,7 +25,7 @@ async def setup_db():
 @pytest.mark.asyncio
 async def test_pessimistic_concurrency(setup_db):
     room_1 = 1
-    async with AsynClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         task = [
             client.post(f"/api/v1/reservas/pessimistic/{room_1}", json={"email": f"user{i}@test.com"})
             for i in range(10)
@@ -43,7 +43,7 @@ async def test_pessimistic_concurrency(setup_db):
 async def test_optimistic_concurrency(setup_db):
     """10 usuarios concurrentes intentan reservar la misma habitación (bloqueo optimista)"""
     room_id = 1
-    async with AsynClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         tasks = [
             client.post(f"/api/v1/reservas/optimistic/{room_id}", json={"email": f"user{i}@test.com"})
             for i in range(10)
