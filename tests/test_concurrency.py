@@ -13,22 +13,17 @@ async_session_factory = async_sessionmaker(engine, expire_on_commit=False)
 
 #@pytest_asyncio.fixture(scope="module")
 @pytest_asyncio.fixture(scope="function")
-
 async def setup_db():
     # Create tables
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
     # Insert a test room with 1 available spot
-    async with AsyncSession(engine) as conn:
-        room = Room(name= "Test Room", total_capacity=1, available=1)
-        conn.add(room)
-        await conn.commit()
-    
-    ## Insert fresh room
-    #async with async_session() as session:
-    #    room = Room(name="Test Room", available=1, version=0)
-    #    session.add(room)
-    #    await session.commit()
+    async with async_session_factory() as session:
+        room = Room(name= "Test Room", total_capacity=1, available=1, version=0)
+        session.add(room)
+        await session.commit()
+
     yield
     # Teardown: drop tables
     async with engine.begin() as conn:
