@@ -3,7 +3,7 @@ import pytest
 import pytest_asyncio
 
 from httpx import AsyncClient, ASGITransport
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_scoped_session, create_async_engine
 from app.main import app
 from app.core.database import engine, Base
 from app.models.booking import Room
@@ -19,6 +19,12 @@ async def setup_db():
         room = Room(name= "Test Room", total_capacity=1, available=1)
         conn.add(room)
         await conn.commit()
+    
+    ## Insert fresh room
+    #async with async_session() as session:
+    #    room = Room(name="Test Room", available=1, version=0)
+    #    session.add(room)
+    #    await session.commit()
     yield
     # Teardown: drop tables
     async with engine.begin() as conn:
