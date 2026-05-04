@@ -23,7 +23,7 @@ async def create_pessimistic_booking(
     return result
 
 
-@router.post("optimistic/{room_id}")
+@router.post("/optimistic/{room_id}")
 async def create_optimistic_booking(
     room_id: int,
     payload: BookingRequest,
