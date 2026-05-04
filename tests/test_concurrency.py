@@ -11,7 +11,9 @@ from app.models.booking import Room
 # Create an asynchronous session factory (using actual engine)
 async_session_factory = async_sessionmaker(engine, expire_on_commit=False)
 
-@pytest_asyncio.fixture(scope="module")
+#@pytest_asyncio.fixture(scope="module")
+@pytest_asyncio.fixture(scope="function")
+
 async def setup_db():
     # Create tables
     async with engine.begin() as conn:
