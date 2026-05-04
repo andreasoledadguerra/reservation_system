@@ -3,11 +3,13 @@ import pytest
 import pytest_asyncio
 
 from httpx import AsyncClient, ASGITransport
-from sqlalchemy.ext.asyncio import AsyncSession, async_scoped_session, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from app.main import app
 from app.core.database import engine, Base
 from app.models.booking import Room
 
+# Create an asynchronous session factory (using actual engine)
+async_session_factory = async_sessionmaker(engine, expire_on_commit=False)
 
 @pytest_asyncio.fixture(scope="module")
 async def setup_db():
