@@ -1,6 +1,7 @@
+from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
-from app.models.room_model import Room, Booking
+from app.models.booking import Room, Booking
 
 class BookingService:
 
@@ -16,7 +17,7 @@ class BookingService:
         
         if room.available > 0:
             room.available -= 1
-            new_booking = Booking(room_id, user_email=email)
+            new_booking = Booking(room_id=room_id, user_email=email)
             db.add(new_booking)
             await db.commit()
             return {"message": f"Booking confirmed for {email}", "available": room.available}
