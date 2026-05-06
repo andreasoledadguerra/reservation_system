@@ -13,7 +13,7 @@ class BookingService:
         room = result.scalar_one_or_none()
 
         if not room:
-            return {"error":"Room not found"}
+            raise HTTPException(status_code=404, detail="Room not found")
         
         if room.available > 0:
             room.available -= 1
@@ -23,7 +23,7 @@ class BookingService:
             return {"message": f"Booking confirmed for {email}", "available": room.available}
         else:
             await db.rollback()
-            return {"error": "No availability"}
+            raise HTTPException(status_code=400, detail="No availability")
         
         
     @staticmethod
@@ -33,9 +33,9 @@ class BookingService:
         room = result.scalar_one_or_none()
 
         if not room:
-            return {"error": "Room not found"}
+            raise HTTPException(status_code=404, detail="Room not found")
         if room.available <= 0:
-            return {"error": "No availablity"}
+            raise HTTPException(status_code=400, detail="No availability")
         
         current_version = room.version
 
@@ -50,7 +50,7 @@ class BookingService:
         if result_update.rowcount == 0:
             # Conflict: someone modified the row before us
             await db.rollback()
-            return {"error": "Concurrency conflict. Please retry."}
+            raise HTTPException(status_code=409, detail="Concurrency conflict. Please retry.")
         
         # If updated succesfully, create the booking record
         new_booking = Booking(room_id=room_id, user_email=email)
