@@ -24,9 +24,9 @@ async def test_pessimistic_concurrency(sample_room):
 
 
 @pytest.mark.asyncio
-async def test_optimistic_concurrency(setup_db):
-    """10 usuarios concurrentes intentan reservar la misma habitación (bloqueo optimista)"""
-    room_id = 1
+async def test_optimistic_concurrency(sample_room):
+    """“10 concurrent users attempt to reserve the same room (optimistic locking)"""
+    room_id = sample_room.id
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         tasks = [
             client.post(f"/api/v1/bookings/optimistic/{room_id}", json={"email": f"user{i}@test.com"})
