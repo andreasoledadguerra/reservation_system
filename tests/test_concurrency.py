@@ -34,7 +34,7 @@ async def test_pessimistic_concurrency(setup_db):
     room_1 = 1
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         task = [
-            client.post(f"/api/v1/reservas/pessimistic/{room_1}", json={"email": f"user{i}@test.com"})
+            client.post(f"/api/v1/bookings/pessimistic/{room_1}", json={"email": f"user{i}@test.com"})
             for i in range(10)
         ]       
         responses = await asyncio.gather(*task) #throw 10 requestes at the same time
@@ -50,7 +50,7 @@ async def test_optimistic_concurrency(setup_db):
     room_id = 1
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         tasks = [
-            client.post(f"/api/v1/reservas/optimistic/{room_id}", json={"email": f"user{i}@test.com"})
+            client.post(f"/api/v1/bookings/optimistic/{room_id}", json={"email": f"user{i}@test.com"})
             for i in range(10)
         ]
         responses = await asyncio.gather(*tasks)
