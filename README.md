@@ -103,7 +103,7 @@ Content-Type: application/json
 ### Optimistic booking
 
 ```http
-POST /api/v1/bookings/pessimistic/{room_id}
+POST /api/v1/bookings/optimistic/{room_id}
 Content-Type: application/json
 
 {
@@ -133,8 +133,15 @@ These tests guarantee that the concurrency mechanisms are working correctly.
 
 ## Author
 Andrea Soledad Guerra - Junior Backend Developer
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-AndreaSoledadGuerra-blue?logo=linkedin)](https://linkedin.com/in/andrea-guerra-s-)
-[![GitHub](https://img.shields.io/badge/GitHub-AndreaSoledadGuerra-black?logo=github)](https://github.com/andreasoledadguerra)
+
+
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-andreasoledadguerra-blue?logo=linkedin)](https://linkedin.com/in/andreasoledadguerra)
+
+
+
+[![GitHub](https://img.shields.io/badge/GitHub-andreasoledadguerra-black?logo=github)](https://github.com/andreasoledadguerra)
+
 
 ## License
 This project is open-source and available under the MIT License.
