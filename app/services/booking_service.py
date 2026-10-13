@@ -13,7 +13,8 @@ class BookingService:
         room = result.scalar_one_or_none()
 
         if not room:
-            raise HTTPException(status_code=404, detail="Room not found")
+            #raise HTTPException(status_code=404, detail="Room not found")
+            return {"error": "Room not found"}
         
         if room.available > 0:
             room.available -= 1
@@ -23,7 +24,8 @@ class BookingService:
             return {"message": f"Booking confirmed for {email}", "available": room.available}
         else:
             await db.rollback()
-            raise HTTPException(status_code=400, detail="No availability")
+            #raise HTTPException(status_code=400, detail="No availability")
+            return {"error": "No availability"}
         
         
     @staticmethod
